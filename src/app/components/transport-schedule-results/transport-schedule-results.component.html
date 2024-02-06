@@ -1,5 +1,5 @@
 <div class="container">
-  <div *ngIf="!results?.pagination?.total; else showResults">
+  <div *ngIf="results && !results?.pagination?.total; else showResults">
     По вашему запросу нечего не найдено
   </div>
   <ng-template #showResults>
@@ -61,6 +61,6 @@
       </div>
     </div>
 
-    <pagination-controls (pageChange)="p = $event"></pagination-controls>
+    <pagination-controls *ngIf="results" (pageChange)="p = $event"></pagination-controls>
   </ng-template>
 </div>

@@ -1,6 +1,5 @@
 import { NgFor, NgIf } from '@angular/common';
 import { Component, Input, OnChanges } from '@angular/core';
-import {MatPaginatorModule} from '@angular/material/paginator';
 import { IResponse, ISegment } from '../../interfaces/interfaces';
 import { NgxPaginationModule } from 'ngx-pagination';
 

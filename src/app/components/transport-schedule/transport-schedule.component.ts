@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, QueryList, ViewChildren, inject } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { FormBuilder, FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MomentDateAdapter } from '@angular/material-moment-adapter';
 import { MatButtonModule } from '@angular/material/button';
@@ -10,10 +10,11 @@ import { MatInputModule  } from '@angular/material/input';
 import moment from "moment";
 import { TransportsScheduleService } from '../../services/transports-schedule.service';
 import { MAT_AUTOCOMPLETE_DEFAULT_OPTIONS, MatAutocompleteModule } from '@angular/material/autocomplete';
-import { BehaviorSubject, Subject, debounceTime, filter, takeUntil } from 'rxjs';
+import { BehaviorSubject, Subject, debounceTime, filter, finalize, takeUntil, tap } from 'rxjs';
 import { AsyncPipe, NgClass } from '@angular/common';
 import { TransportScheduleResultsComponent } from '../transport-schedule-results/transport-schedule-results.component';
 import { IResponse } from '../../interfaces/interfaces';
+import { NgxSpinnerModule, NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-transport-schedule',
@@ -30,7 +31,8 @@ import { IResponse } from '../../interfaces/interfaces';
     NgClass,
     FormsModule,
     ReactiveFormsModule,
-    TransportScheduleResultsComponent
+    TransportScheduleResultsComponent,
+    NgxSpinnerModule
   ],
   providers: [
     MatDatepickerModule,
@@ -62,12 +64,14 @@ import { IResponse } from '../../interfaces/interfaces';
       }
     }
   ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
   templateUrl: './transport-schedule.component.html',
   styleUrl: './transport-schedule.component.scss'
 })
 export class TransportScheduleComponent implements OnInit, OnDestroy {
   private fb = inject(FormBuilder);
   private transportsScheduleService = inject(TransportsScheduleService);
+  private spinner = inject(NgxSpinnerService);
   public form = this.fb.group({
     transport_types: [''],
     date: ['', [Validators.required]],
@@ -104,9 +108,16 @@ export class TransportScheduleComponent implements OnInit, OnDestroy {
       from: this.fromControl.value.code,
       to: this.toControl.value.code
     });
-    this.transportsScheduleService.getTransportsSchedule(params).subscribe(res => {
-      this.results = res;
-    });
+    this.spinner.show();
+    this.transportsScheduleService.getTransportsSchedule(params)
+      .pipe(
+        finalize(() => {
+          this.spinner.hide();
+        })
+      )
+      .subscribe(res => {
+        this.results = res;
+      });
   }
 
   ngOnInit(): void {
@@ -114,10 +125,13 @@ export class TransportScheduleComponent implements OnInit, OnDestroy {
       .pipe(
         debounceTime(500),
         filter(val => typeof val === 'string'),
+        tap(() => {
+          this.spinner.show();
+        }),
         takeUntil(this.destroy$)
       )
       .subscribe(val => {
-        console.log(val)
+        this.spinner.hide();
         if (!val) {
           this.fromResults$.next([]);
         } else {
@@ -130,9 +144,13 @@ export class TransportScheduleComponent implements OnInit, OnDestroy {
       .pipe(
         debounceTime(500),
         filter(val => typeof val === 'string'),
+        tap(() => {
+          this.spinner.show();
+        }),
         takeUntil(this.destroy$)
       )
       .subscribe(val => {
+        this.spinner.hide();
         if (!val) {
           this.toResults$.next([]);
         } else {
