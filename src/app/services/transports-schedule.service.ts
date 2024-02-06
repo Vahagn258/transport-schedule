@@ -15,7 +15,7 @@ export class TransportsScheduleService {
   constructor() { }
 
   getTransportsSchedule(params: Params): Observable<IResponse> {
-    return this.httpService.get(environment.apiUrl, Object.assign(params, {
+    return this.httpService.get(environment.searchApiUrl, Object.assign(params, {
       apikey: environment.apiToken
     }));
   }
