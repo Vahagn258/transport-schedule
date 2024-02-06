@@ -1,0 +1,98 @@
+.container {
+  max-width: 400px;
+  margin: 0 auto;
+  .icon {
+    width: 15px;
+    height: 15px;
+
+    &__switch {
+      margin-left: 10px;
+    }
+  }
+
+  .location {
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 10px;
+
+    .search-inp {
+      border: none;
+      padding: 5px;
+      outline: none;
+    }
+  }
+
+  .date {
+    border-radius: 6px;
+    margin-bottom: 10px;
+
+    .date-inp {
+      border: none;
+      background: transparent;
+      max-width: 100px;
+      user-select: none;
+      outline: none;
+      display: none;
+    }
+
+    >div {
+      &.active {
+        background: #555555;
+        color: white;
+      }
+
+      padding: 10px;
+      background: #e9ecef;
+      color: #6e6f70;
+
+      &:first-child {
+        border-top-left-radius: 6px;
+        border-bottom-left-radius: 6px;
+      }
+
+      &:last-child {
+        border-top-right-radius: 6px;
+        border-bottom-right-radius: 6px;
+      }
+
+      >span {
+        margin-right: 5px;
+      }
+    }
+  }
+
+  .transport-type {
+    margin-bottom: 10px;
+    >div {
+      padding: 10px;
+      background: #e9ecef;
+      color: #6e6f70;
+      border-radius: 6px;
+      min-width: 50px;
+
+      &.active {
+        background: #555555;
+        color: white;
+      }
+    }
+  }
+
+  .submit {
+    margin-bottom: 50px;
+    button {
+      background: #fdca42;
+      padding: 15px;
+      width: 100%;
+      color: #544c35;
+    }
+  }
+}
+
+::ng-deep .cdk-overlay-pane:not(.autocomplete-overlay), .mat-datepicker-popup {
+  left: 50% !important;
+  top: 50% !important;
+  transform: translate(-50%, -50%);
+}
+
+

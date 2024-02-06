@@ -1,0 +1,95 @@
+<form class="container" (ngSubmit)="onSubmit()" [formGroup]="form">
+  <div class="location flex">
+    <div class="w-full">
+      <input  type="text"
+              placeholder="Откуда"
+              formControlName="from"
+              class="search-inp w-full"
+              [matAutocomplete]="fromAutocomplete">
+      <mat-autocomplete #fromAutocomplete="matAutocomplete" [displayWith]="displayFn" matAutocompletePosition="below">
+        @for (option of fromResults$ | async; track option) {
+          <mat-option [value]="option">{{option['name']}}</mat-option>
+        }
+      </mat-autocomplete>
+      <hr>
+      <input  type="text"
+              placeholder="Куда"
+              class="search-inp w-full"
+              [matAutocomplete]="toAutocomplete"
+              formControlName="to">
+      <mat-autocomplete #toAutocomplete="matAutocomplete" [displayWith]="displayFn">
+        @for (option of toResults$ | async; track option) {
+          <mat-option [value]="option">{{option['name']}}</mat-option>
+        }
+      </mat-autocomplete>
+    </div>
+    <div class="flex align-center justify-center pointer icon__switch">
+      <img  src="assets/icons/up-down.png" class="icon"
+            (click)="switchFromTo()">
+    </div>
+  </div>
+  <div class="date flex flex-wrap">
+    <div  (click)="setDate(today)"
+          class="pointer flex align-center flex-1 justify-center"
+          [ngClass]="{'active': dateControl.value === today}">
+        Сегодня
+    </div>
+    <div  (click)="setDate(tommorow)"
+          class="pointer flex align-center flex-1 justify-center"
+          [ngClass]="{'active': dateControl.value === tommorow}">
+      Завтра
+    </div>
+    <div  class="pointer flex flex-1 justify-center align-center"
+          [ngClass]="{'active': dateControl.value && dateControl.value !== tommorow && dateControl.value !== today}">
+      <input  matInput
+              [matDatepicker]="picker"
+              [matDatepickerFilter]="dateFilter"
+              placeholder="Дата"
+              (dateChange)="onDateChange($event)"
+              class="date-inp pointer">
+      <span>{{ dateControl.value !== today && dateControl.value !== tommorow && dateControl.value ? dateControl.value : 'Дата' }}</span>
+      <img src="assets/icons/calendar.png" (click)="picker.open()" class="icon">
+      <mat-datepicker #picker></mat-datepicker>
+    </div>
+  </div>
+  <div class="transport-type flex justify-between">
+    <div  class="pointer"
+          (click)="onSetTransportType('')"
+          [ngClass]="{'active': transportTypeControl.value === ''}">
+      Любой
+    </div>
+    <div  class="pointer flex align-center justify-center"
+          (click)="onSetTransportType('plane')"
+          [ngClass]="{'active': transportTypeControl.value === 'plane'}">
+      <img  src="assets/icons/plane.png"
+            class="icon">
+    </div>
+    <div  class="pointer flex align-center justify-center"
+          (click)="onSetTransportType('train')"
+          [ngClass]="{'active': transportTypeControl.value === 'train'}">
+      <img  src="assets/icons/train.png"
+            class="icon">
+    </div>
+    <div  class="pointer flex align-center justify-center"
+          (click)="onSetTransportType('suburban')"
+          [ngClass]="{'active': transportTypeControl.value === 'suburban'}">
+      <img  src="assets/icons/suburban.png"
+            class="icon">
+    </div>
+    <div  class="pointer flex align-center justify-center"
+          (click)="onSetTransportType('bus')"
+          [ngClass]="{'active': transportTypeControl.value === 'bus'}">
+      <img  src="assets/icons/bus.png"
+            class="icon">
+    </div>
+  </div>
+  <div class="submit">
+    <button mat-button
+            type="submit"
+            [disabled]="form.invalid">Найти</button>
+  </div>
+
+  <div>
+    <app-transport-schedule-results [results]="results"></app-transport-schedule-results>
+  </div>
+</form>

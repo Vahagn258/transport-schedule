@@ -1,0 +1,20 @@
+{
+  "/v3.0/search": {
+    "target": "https://api.rasp.yandex.net",
+    "secure": true,
+    "logLevel": "debug",
+    "changeOrigin": true
+  },
+  "/v3.0/stations_list": {
+    "target": "https://api.rasp.yandex.net",
+    "secure": true,
+    "logLevel": "debug",
+    "changeOrigin": true
+  },
+  "/all_suggests": {
+    "target": "https://suggests.rasp.yandex.net",
+    "secure": true,
+    "logLevel": "debug",
+    "changeOrigin": true
+  }
+}

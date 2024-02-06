@@ -1,0 +1,36 @@
+.container {
+  margin-bottom: 50px;
+
+  .icon {
+    word-wrap: 15px;
+    height: 15px;
+  }
+
+  .resultBorder {
+    border-bottom: 1px solid #ccc;
+  }
+
+  .result {
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+    .small-text {
+      font-size: 11px;
+      color: #ababab;
+    }
+    .info {
+      max-width: 100px;
+      .icon {
+        margin-right: 5px;
+      }
+    }
+
+    .from-to {
+      max-width: 250px;
+    }
+
+    .duration {
+      padding-top: 15px;
+      margin: 0 15px;
+    }
+  }
+}

@@ -1,0 +1,66 @@
+<div class="container">
+  <div *ngIf="!results?.pagination?.total; else showResults">
+    По вашему запросу нечего не найдено
+  </div>
+  <ng-template #showResults>
+    <div  class="result flex justify-between"
+          *ngFor="let segment of segments | paginate: { itemsPerPage: 10, currentPage: p }">
+      <div class="info flex align-start">
+        <img  [src]="'assets/icons/' + segment.thread.transport_type + '.png'"
+              class="icon"
+              [title]="transportTitles[segment.thread.transport_type]">
+        <div class="title flex flex-column">
+          <b>
+            {{ segment.thread.short_title }}
+          </b>
+          <span>
+            {{ segment.thread.vehicle }}
+          </span>
+        </div>
+      </div>
+      <div class="from-to flex">
+        <div class="from flex flex-column">
+          <span class="small-text">
+            {{ segment['startDate'] }}
+          </span>
+          <b>
+            {{ segment['startTime'] }}
+          </b>
+          <span class="small-text">
+            {{ segment.from.popular_title ? segment.from.popular_title : segment.from.title }}
+          </span>
+          <span class="small-text">
+            {{ segment.departure_platform }}
+          </span>
+          <span class="small-text">
+            {{ segment.departure_terminal }}
+          </span>
+        </div>
+
+        <div class="duration small-text">
+          {{ segment['durationTime'] }}
+        </div>
+
+        <div class="to flex flex-column">
+          <span class="small-text">
+            {{ segment['endDate'] }}
+          </span>
+          <b>
+            {{ segment['endTime'] }}
+          </b>
+          <span class="small-text">
+            {{ segment.to.popular_title ? segment.to.popular_title : segment.to.title }}
+          </span>
+          <span class="small-text">
+            {{ segment.arrival_platform }}
+          </span>
+          <span class="small-text">
+            {{ segment.arrival_terminal }}
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <pagination-controls (pageChange)="p = $event"></pagination-controls>
+  </ng-template>
+</div>
